@@ -4,6 +4,7 @@ public class OkhttpClient2 {
 
     private Dispatcher2 dispatcher;
     private boolean isCanceled;
+    int recount ;//
 
     public OkhttpClient2() {
         this(new Builder());
@@ -12,6 +13,11 @@ public class OkhttpClient2 {
     public OkhttpClient2(Builder builder) {
         dispatcher = builder.dispatcher;
         isCanceled = builder.isCanceled;
+        recount = builder.recount;
+    }
+
+    public int getRecount(){
+        return recount;
     }
 
     public boolean getCanceled() {
@@ -21,6 +27,8 @@ public class OkhttpClient2 {
     public final static class Builder {
         private Dispatcher2 dispatcher;
         private boolean isCanceled;
+
+        int recount = 3;//重试次数
 
         public Builder() {
             dispatcher = new Dispatcher2();
@@ -34,6 +42,10 @@ public class OkhttpClient2 {
         //用户取消请求  为true
         public Builder canceled() {
             isCanceled = true;
+            return this;
+        }
+        public Builder setReCount(int recount) {
+            this.recount = recount;
             return this;
         }
 

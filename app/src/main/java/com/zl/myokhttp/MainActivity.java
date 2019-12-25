@@ -1,6 +1,7 @@
 package com.zl.myokhttp;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import com.zl.myokhttp.okhttp.Call2;
 import com.zl.myokhttp.okhttp.Callback2;
 import com.zl.myokhttp.okhttp.OkhttpClient2;
 import com.zl.myokhttp.okhttp.Request2;
+import com.zl.myokhttp.okhttp.RequestBody2;
 import com.zl.myokhttp.okhttp.Response2;
 
 import java.io.IOException;
@@ -21,7 +23,10 @@ import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final String PATH = "https://www.baidu.com";
+//    private final String PATH = "http://wthrcdn.etouch.cn/WeatherApi?citykey=101010100";
+    private final String PATH = "http://www.weather.com.cn/data/cityinfo/101190408.html";
+//    private final String PATH = "http://product.weather.com.cn/alarm/stationalarm.php";
+//    private final String PATH = "http://wthrcdn.etouch.cn/WeatherApi";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +53,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void userMyOkhttp(View view) {
         OkhttpClient2 okhttpClient2 = new OkhttpClient2.Builder().build();
-        Request2 request2 = new Request2.Builder().url(PATH).build();
+        RequestBody2 requestBody2 = new RequestBody2();
+        requestBody2.addBody("areaid","101190401");
+        requestBody2.addBody("count","-1");
+        requestBody2.addBody("_","1381894097508");
+        Request2 request2 = new Request2.Builder().get().url(PATH).build();
+//        Request2 request2 = new Request2.Builder().post(requestBody2).url(PATH).build();
         Call2 call2 = okhttpClient2.newCall(request2);
 
         //执行异步
@@ -60,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call2 call, Response2 response) throws IOException {
-                System.out.println("自定义OKHTTP请求成功...result:"+response.string());
+                System.out.println("自定义OKHTTP请求成功...result:"+response.getBody()+",请求结果码:"+response.getStatus());
+                Log.e("mainactivity","自定义OKHTTP请求成功...result:"+response.getBody()+",请求结果码:"+response.getStatus());
             }
         });
     }

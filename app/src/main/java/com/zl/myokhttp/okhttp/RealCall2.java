@@ -1,6 +1,14 @@
 package com.zl.myokhttp.okhttp;
 
+import com.zl.myokhttp.okhttp.chain.ChainManager;
+import com.zl.myokhttp.okhttp.chain.ConnectionServerInterceptor;
+import com.zl.myokhttp.okhttp.chain.Interceptor2;
+import com.zl.myokhttp.okhttp.chain.ReResponseIntercept;
+import com.zl.myokhttp.okhttp.chain.RequestHeaderInterceptor;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RealCall2 implements Call2 {
 
@@ -8,13 +16,25 @@ public class RealCall2 implements Call2 {
     private OkhttpClient2 okhttpClient2;
     private Request2 request2;
 
+
+    private boolean executed;
+
     public RealCall2(OkhttpClient2 okhttpClient2, Request2 request2) {
         this.okhttpClient2 = okhttpClient2;
         this.request2 = request2;
     }
 
-    private boolean executed;
+    public OkhttpClient2 getOkhttpClient2() {
+        return okhttpClient2;
+    }
 
+    public Request2 getRequest2() {
+        return request2;
+    }
+
+    public boolean isExecuted() {
+        return executed;
+    }
 
     @Override
     public void enqueue(Callback2 responseCallback) {
@@ -70,10 +90,16 @@ public class RealCall2 implements Call2 {
 
         }
 
-        private Response2 getResponseWithInterceptorChain() {
-            Response2 response2  = new Response2();
-            response2.setBody("流程走通....");
-            return response2;
+        private Response2 getResponseWithInterceptorChain() throws IOException{
+//            Response2 response2 = new Response2();
+//            response2.setBody("流程走通....");
+//            return response2;
+            List<Interceptor2>interceptor2List = new ArrayList<>();
+            interceptor2List.add(new ReResponseIntercept());
+            interceptor2List.add(new RequestHeaderInterceptor());
+            interceptor2List.add(new ConnectionServerInterceptor());
+            ChainManager  chainManager = new ChainManager(interceptor2List,0,request2,RealCall2.this);
+            return chainManager.getResponse(request2);
         }
     }
 

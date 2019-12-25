@@ -11,6 +11,7 @@ public class Request2 {
     private String url;
     private String requestMethod = GET;
     private Map<String, String> mHeaderList = new HashMap<>();
+    private RequestBody2 requestBody2;
 
     public String getUrl() {
         return url;
@@ -20,6 +21,9 @@ public class Request2 {
         return requestMethod;
     }
 
+    public RequestBody2 getRequestBody2(){
+        return requestBody2;
+    }
     public Map<String, String> getmHeaderList() {
         return mHeaderList;
     }
@@ -30,6 +34,9 @@ public class Request2 {
 
     public Request2(Builder builder) {
         this.url = builder.url;
+        this.mHeaderList = builder.mHeaderList;
+        this.requestMethod = builder.requestMethod;
+        this.requestBody2 = builder.requestBody2;
     }
 
     public final static class Builder {
@@ -37,7 +44,7 @@ public class Request2 {
         private String url;
         private String requestMethod = GET;
         private Map<String, String> mHeaderList = new HashMap<>();
-
+        private RequestBody2 requestBody2;
         public Builder url(String url) {
             this.url = url;
             return this;
@@ -48,8 +55,9 @@ public class Request2 {
             return this;
         }
 
-        public Builder post() {
+        public Builder post(RequestBody2 requestBody2) {
             this.requestMethod = POST;
+            this.requestBody2 = requestBody2;
             return this;
         }
 
