@@ -27,7 +27,7 @@ public class Dispatcher2 {
 
     public ExecutorService executorService() {
         ExecutorService executorService = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS,
-                new SynchronousQueue<Runnable>(),  
+                new SynchronousQueue<Runnable>(),
                 new ThreadFactory() {
                     @Override
                     public Thread newThread(Runnable r) {
