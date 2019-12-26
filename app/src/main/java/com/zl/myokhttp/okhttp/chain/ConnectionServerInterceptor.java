@@ -69,6 +69,7 @@ public class ConnectionServerInterceptor implements Interceptor2 {
                     response2.setBody(bufferedReader.readLine());
                     break;
                 }
+                Log.e("readline",readLine);
             }
         } catch (IOException e) {
             e.printStackTrace();

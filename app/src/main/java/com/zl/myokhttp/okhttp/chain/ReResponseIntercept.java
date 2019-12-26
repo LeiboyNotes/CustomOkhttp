@@ -31,6 +31,6 @@ public class ReResponseIntercept implements Interceptor2 {
 
             }
         }
-        return null;
+        throw ioException;
     }
 }

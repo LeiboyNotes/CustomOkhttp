@@ -24,9 +24,9 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
 //    private final String PATH = "http://wthrcdn.etouch.cn/WeatherApi?citykey=101010100";
-    private final String PATH = "http://www.weather.com.cn/data/cityinfo/101190408.html";
+//    private final String PATH = "http://www.weather.com.cn/data/cityinfo/101190408.html";
 //    private final String PATH = "http://product.weather.com.cn/alarm/stationalarm.php";
-//    private final String PATH = "http://wthrcdn.etouch.cn/WeatherApi";
+    private final String PATH = "http://wthrcdn.etouch.cn/WeatherApi";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +54,10 @@ public class MainActivity extends AppCompatActivity {
     public void userMyOkhttp(View view) {
         OkhttpClient2 okhttpClient2 = new OkhttpClient2.Builder().build();
         RequestBody2 requestBody2 = new RequestBody2();
-        requestBody2.addBody("areaid","101190401");
-        requestBody2.addBody("count","-1");
-        requestBody2.addBody("_","1381894097508");
-        Request2 request2 = new Request2.Builder().get().url(PATH).build();
+        requestBody2.addBody("citykey","101010100");
+//        requestBody2.addBody("count","-1");
+//        requestBody2.addBody("_","1381894097508");
+        Request2 request2 = new Request2.Builder().post(requestBody2).url(PATH).build();
 //        Request2 request2 = new Request2.Builder().post(requestBody2).url(PATH).build();
         Call2 call2 = okhttpClient2.newCall(request2);
 
