@@ -6,6 +6,8 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.zl.myokhttp.connectionpool.ConnectionPool;
+import com.zl.myokhttp.connectionpool.UseConnectionPool;
 import com.zl.myokhttp.okhttp.Call2;
 import com.zl.myokhttp.okhttp.Callback2;
 import com.zl.myokhttp.okhttp.OkhttpClient2;
@@ -74,5 +76,20 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("mainactivity","自定义OKHTTP请求成功...result:"+response.getBody()+",请求结果码:"+response.getStatus());
             }
         });
+    }
+
+    public void connectionPoolRequest(View view) {
+        final ConnectionPool connectionPool = new ConnectionPool();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                UseConnectionPool useConnectionPool = new UseConnectionPool();
+                useConnectionPool.useConnectionPool(connectionPool,"restapi.amap.com",80);
+                useConnectionPool.useConnectionPool(connectionPool,"restapi.amap.com",80);
+                useConnectionPool.useConnectionPool(connectionPool,"restapi.amap.com",80);
+                useConnectionPool.useConnectionPool(connectionPool,"restapi.amap.com",80);
+                useConnectionPool.useConnectionPool(connectionPool,"restapi.amap.com",80);
+            }
+        }).start();
     }
 }

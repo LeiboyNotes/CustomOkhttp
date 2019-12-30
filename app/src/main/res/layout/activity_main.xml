@@ -17,4 +17,10 @@
         android:layout_height="wrap_content"
         android:text="使用自己的okhttp"
         android:onClick="userMyOkhttp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="线程池测试"
+        android:onClick="connectionPoolRequest"/>
 </LinearLayout>

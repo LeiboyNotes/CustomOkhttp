@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * 连接池
  */
-public class ConnnectionPool {
+public class ConnectionPool {
 
     //容器（双端队列）  保存连接对象
     private static Deque<HttpConnection> httpConnectionDeque = null;
@@ -34,10 +34,12 @@ public class ConnnectionPool {
                 }
                 if (nextCheckCleanTime > 0) {
                     //等待一段时间再去检查是否需要清理
-                    try {
-                        ConnnectionPool.this.wait(nextCheckCleanTime);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    synchronized (ConnectionPool.this){
+                        try {
+                            ConnectionPool.this.wait(nextCheckCleanTime);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -48,7 +50,6 @@ public class ConnnectionPool {
     private long clean(long currentTimeMills) {
         long recordSave = -1;//下一次的检查时间
         synchronized (this) {
-
             //遍历容器操作
             Iterator<HttpConnection> iterator = httpConnectionDeque.iterator();
             while (iterator.hasNext()) {
@@ -58,17 +59,14 @@ public class ConnnectionPool {
                 if (idleTime > keepAlive) {
                     //移除
                     iterator.remove();
-
                     //关闭Socket
                     httpConnection.closeSocket();
-
                     continue;
                 }
                 //得到最长闲置时间
                 if (recordSave < idleTime) {
                     recordSave = idleTime;
                 }
-
             }
             if (recordSave >= 0) {
                 return (keepAlive - recordSave);
@@ -92,11 +90,12 @@ public class ConnnectionPool {
                 }
             });
 
-    public ConnnectionPool() {
+
+    public ConnectionPool() {
         this(1, TimeUnit.MINUTES);
     }
 
-    public ConnnectionPool(long keepAlive, TimeUnit timeUnit) {
+    public ConnectionPool(long keepAlive, TimeUnit timeUnit) {
         this.keepAlive = timeUnit.toMillis(keepAlive);
         httpConnectionDeque = new ArrayDeque<>();
     }
@@ -111,7 +110,6 @@ public class ConnnectionPool {
 
             //开始清理
             threadPoolExecutor.execute(cleanRunnable);
-
         }
         httpConnectionDeque.add(httpConnection);
     }
@@ -136,6 +134,5 @@ public class ConnnectionPool {
         }
         return null;
     }
-
 
 }
